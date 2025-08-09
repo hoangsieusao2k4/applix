@@ -115,17 +115,17 @@ class AppSettingsController extends Controller
 
         // Upload ảnh nền nếu có
         if ($request->hasFile('splash_bg_img_file')) {
-            if ($splash->background_image_path) {
-                Storage::disk('public')->delete($splash->background_image_path);
-            }
+            // if ($splash->background_image_path) {
+            //     Storage::disk('public')->delete($splash->background_image_path);
+            // }
             $splash->background_image_path = $request->file('splash_bg_img_file')->store('splash/bg', 'public');
         }
 
         // Upload gif nếu có
         if ($request->hasFile('splash_bg_gif_img_file')) {
-            if ($splash->background_gif_path) {
-                Storage::disk('public')->delete($splash->background_gif_path);
-            }
+            // if ($splash->background_gif_path) {
+            //     Storage::disk('public')->delete($splash->background_gif_path);
+            // }
             $splash->background_gif_path = $request->file('splash_bg_gif_img_file')->store('splash/gif', 'public');
         }
 

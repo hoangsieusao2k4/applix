@@ -17,4 +17,5 @@ class AppUser extends Model
     protected $casts = [
         'permissions' => 'array',
     ];
+ 
 }

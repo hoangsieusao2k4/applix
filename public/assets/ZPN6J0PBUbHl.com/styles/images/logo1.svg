@@ -1,0 +1,9 @@
+<svg width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Biểu tượng icon hình đơn giản bên trái -->
+  <rect x="5" y="5" width="50" height="50" rx="12" ry="12" fill="#6B46C1"></rect>
+  <path d="M20 15 L40 45 M40 15 L20 45" stroke="white" stroke-width="5" stroke-linecap="round"></path>
+  
+  <!-- Chữ taoapp bên phải -->
+  <text x="65" y="38" font-family="Arial, sans-serif" font-weight="700" font-size="30" fill="#6B46C1">tao</text>
+  <text x="120" y="38" font-family="Arial, sans-serif" font-weight="300" font-size="30" fill="#6B46C1">app</text>
+</svg>

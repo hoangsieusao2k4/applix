@@ -60,4 +60,32 @@ class User extends Authenticatable
         $permissions = json_decode($record->pivot->permissions, true) ?? [];
         return in_array($permission, $permissions);
     }
+    public function hasAppPermission($app, $permission)
+    {
+        // Chủ sở hữu thì có tất cả quyền
+        if ($app->user_id === $this->id) {
+            return true;
+        }
+
+        $appUser = AppUser::where('app_id', $app->id)
+            ->where('user_id', $this->id)
+            ->first();
+
+        if (!$appUser) {
+            return false;
+        }
+
+        $permissions = $appUser->permissions ?? [];
+
+        if (is_string($permissions) && str_starts_with($permissions, '[')) {
+            $permissions = json_decode($permissions, true) ?? [];
+        } elseif (is_string($permissions)) {
+            $permissions = array_map('trim', explode(',', $permissions));
+        } elseif (!is_array($permissions)) {
+            $permissions = [];
+        }
+
+        // Có quyền "all" hoặc quyền cụ thể
+        return in_array('all', $permissions) || in_array($permission, $permissions, true);
+    }
 }

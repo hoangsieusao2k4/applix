@@ -80,12 +80,29 @@
                                 Ứng Dụng</a>
                             <a class="upgrade" href="https://appilix.com/account/upgrade/198213"
                                 style="display: none;">Gia Hạn Ứng Dụng</a>
-                            <form action="{{ route('apps.destroy', $app) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button class="delete" onclick="return confirm('Bạn có chắc muốn xóa không?')">Xóa
-                                    Ứng Dụng</button>
-                            </form>
+                            @if (auth()->id() === $app->user_id)
+                                {{-- Chủ app: nút Xóa ứng dụng --}}
+                                @can('delete', $app)
+                                    <form action="{{ route('apps.destroy', $app) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="delete" onclick="return confirm('Bạn có chắc muốn xóa không?')">
+                                            Xóa Ứng Dụng
+                                        </button>
+                                    </form>
+                                @endcan
+                            @else
+                                {{-- Thành viên: nút Rời khỏi ứng dụng --}}
+                                <form action="{{ route('apps.leave', $app) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="delete"
+                                        onclick="return confirm('Bạn có chắc muốn rời khỏi ứng dụng này không?')">
+                                        Rời  ứng dụng
+                                    </button>
+                                </form>
+                            @endif
+
                         </div>
                     </div>
                     <div class="overview_items">

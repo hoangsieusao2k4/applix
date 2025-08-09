@@ -102,8 +102,6 @@ class AppController extends Controller
     {
         $this->authorize('delete', $app); // Nếu không có quyền sẽ tự trả 403
         // $this->authorize('view', $app); // hoặc policy riêng nếu bạn có 'delete'
-
-
         try {
             // Nếu bạn lưu output build dưới dạng thư mục, xoá nó
             if ($app->build_output_path) {
@@ -275,9 +273,6 @@ class AppController extends Controller
 
             // Gửi notification (queued)
             $user->notify(new InviteCollaboratorNotification($app, $resetUrl, true));
-        } else {
-            // Người dùng đã tồn tại: gửi notification thông báo họ được thêm
-            $user->notify(new InviteCollaboratorNotification($app, url(config('app.url')), false));
         }
 
         return redirect()->back()->with('success', 'Collaborator added successfully.');
@@ -298,15 +293,18 @@ class AppController extends Controller
         return back()->with('success', 'Đã xóa thành viên khỏi ứng dụng.');
     }
 
-    public function updateMember(Request $request, $collaborator)
+    public function updateMember(Request $request, $member)
     {
+
         $request->validate([
             'permissions' => 'required|array|min:1',
             'permissions.*' => 'in:all,dashboard,notification,code-signing,build-download,app-info,splash-screen,customization,app-bar,apple-att,in-app-purchase,appsflyer,drawer-nav,bottom-nav,fab,speed-dial,custom-css-js,deeplink,google-sign-in,firebase,admob,biometric-auth,secure-app-switcher,qr-scanner,nfc-reader,meta,advanced,modules',
         ]);
 
         // Tìm người dùng cộng tác viên
-        $collab = AppUser::findOrFail($collaborator);
+        $collab = AppUser::where('user_id', $member)->firstOrFail();
+
+
 
         // Kiểm tra quyền sở hữu ứng dụng
         // if (!$collab->app || $collab->app->user_id !== auth()->id()) {
@@ -318,15 +316,28 @@ class AppController extends Controller
         if (in_array('all', $permissions)) {
             $permissions = ['all'];
         }
-
         // Cập nhật chỉ quyền
         try {
-            $collab->permissions = json_encode($permissions);
+            $collab->permissions = $permissions;
             $collab->save();
 
             return redirect()->back()->with('success', 'Permissions updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to update permissions. Please try again.');
         }
+    }
+    // AppUserController.php
+    public function leave(App $app)
+    {
+        $userId = auth()->id();
+
+        // Không cho chủ app rời
+        if ($app->user_id == $userId) {
+            return back()->with('error', 'Chủ ứng dụng không thể rời khỏi ứng dụng.');
+        }
+
+        $app->collaborators()->detach($userId);
+
+        return redirect()->route('apps.index')->with('success', 'Bạn đã rời khỏi ứng dụng.');
     }
 }

@@ -110,7 +110,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/apps/show-members', [AppController::class, 'showMember'])->name('showMember');
     Route::post('/apps/add-members', [AppController::class, 'addMember'])->name('addMember');
     Route::delete('/apps/{app}/members/{user}', [AppController::class, 'destroyMember'])->name('apps.members.destroy');
-    Route::put('/account/collaborators/{collaborator}', [AppController::class, 'updateMember'])->name('apps.members.update');
+    // web.php
+Route::delete('/apps/{app}/leave', [AppController::class, 'leave'])->name('apps.leave');
+
+    Route::put('/account/collaborators/{member}', [AppController::class, 'updateMember'])->name('apps.members.update');
 });
 Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])
     ->name('password.reset');

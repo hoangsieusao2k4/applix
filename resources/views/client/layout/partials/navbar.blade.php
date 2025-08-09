@@ -3,7 +3,7 @@
         <div class="nav_bar_elements">
             <div class="nav_bar_container">
                 <a href="{{ route('index') }}" class="appilix_logo">
-                    <img src="{{ asset('assets/ZPN6J0PBUbHl.com/styles/images/logo.svg') }}" alt="Appilix">
+                    <img src="{{ asset('assets/ZPN6J0PBUbHl.com/styles/images/logo1.svg') }}" alt="">
                 </a>
                 <div class="action_menu"></div>
             </div>

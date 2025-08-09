@@ -151,15 +151,16 @@
                                         <h3 class="collaborator_name">{{ $member->name ?? 'Cộng tác viên' }}</h3>
                                         <span class="collaborator_email">{{ $member->email }}</span>
                                         <span class="app_info_mobile">{{ $app->name }} ({{ $app->platform }})</span>
-                                        <div class="permissions_mobile">
+                                        {{-- <div class="permissions_mobile">
                                             @foreach (json_decode($member->pivot->permissions ?? '[]') as $permission)
                                                 <span class="tag tag_red">{{ $permission }}</span>
                                             @endforeach
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 <span class="app_info">{{ $app->name }} ({{ $app->platform }})</span>
                                 <div class="permissions">
+
                                     @foreach (json_decode($member->pivot->permissions ?? '[]') as $permission)
                                         <span class="tag tag_green">{{ $permission }}</span>
                                     @endforeach
@@ -252,6 +253,7 @@
     <!-- Modal Sửa Cộng tác viên -->
     @foreach ($apps as $app)
         @foreach ($app->collaborators as $member)
+
             <div class="appilix_acc_teammate_popup_container" id="edit-collaborator-{{ $member->id }}">
                 <div class="popup_card">
                     <div class="header">
